@@ -2,6 +2,7 @@ package com.example.demo.student;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,7 @@ import com.example.demo.student.Student;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/student")
@@ -33,6 +35,7 @@ public class StudentController {
 	}
 
     @PostMapping
+    @ResponseBody
     public void registerNewStudent(@RequestBody Student student) {
         studentService.addNewStudent(student);
     }
@@ -45,10 +48,9 @@ public class StudentController {
     @PutMapping(path = "{studentId}")
     public void updateStudent(
             @PathVariable("studentId") Long studentId, 
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String email
+            @RequestBody Student student
             ) {
-        studentService.updateStudent(studentId, name, email);
+        studentService.updateStudent(studentId, student.getName(), student.getEmail());
     }
     
 }
